@@ -4,6 +4,7 @@
    user: root
    pre_tasks:
     - include_vars: ec2_variables/{{type}}.yml
+    - include_vars: vpc_variables/{{type}}.yml
    roles:
     - provision-ec2 
     - vpc
