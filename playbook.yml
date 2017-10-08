@@ -1,10 +1,12 @@
- - hosts: localhost
-   connection: local
-   gather_facts: false
-   user: root
-   pre_tasks:
-    - include_vars: ec2_variables/{{type}}.yml
-    - include_vars: vpc_variables/{{type}}.yml
-   roles:
-    - provision-ec2 
-    - vpc
+---
+  - hosts: localhost
+    connection: local
+    gather_facts: false
+    pre_tasks:
+    # - include_vars: ec2_variables/{{type}}.yml
+      - include_vars: vpc_variables/vars.yml
+    roles:
+      - vpc_create
+    # - provision-ec2
+    vars:
+      ansible_python_interpreter: "venv/bin/python"

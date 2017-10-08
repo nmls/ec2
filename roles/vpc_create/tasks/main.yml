@@ -3,9 +3,6 @@
   ec2_vpc_net:
     name:             "{{ vpc_name }}"
     cidr_block:       "{{ vpc_cidr_block }}"
-    region:           "{{ aws_region }}"
-    aws_access_key:   "{{ aws_access_key }}"
-    aws_secret_key:   "{{ aws_secret_key }}"
     state:            "present"
   register: my_vpc
 
@@ -21,10 +18,7 @@
     state:            "present"
     vpc_id:           "{{ vpc_id }}"
     cidr:             "{{ public_subnet_1_cidr }}"
-    az:               "{{ aws_region }}a"
-    region:           "{{ aws_region }}"
-    aws_access_key:   "{{ aws_access_key }}"
-    aws_secret_key:   "{{ aws_secret_key }}"
+    az:               "{{ lookup('env','AWS_REGION') }}a"
     resource_tags:
       Name:           "Public Subnet"
   register: my_public_subnet
@@ -38,9 +32,6 @@
 - name:               Create Internet Gateway for VPC
   ec2_vpc_igw:
     vpc_id:           "{{ vpc_id }}"
-    region:           "{{ aws_region }}"
-    aws_access_key:   "{{ aws_access_key }}"
-    aws_secret_key:   "{{ aws_secret_key }}"
     state:            "present"
   register: my_vpc_igw
 
@@ -53,9 +44,6 @@
 - name:               route table
   ec2_vpc_route_table:
     vpc_id:           "{{ vpc_id }}"
-    region:           "{{ aws_region }}"
-    aws_access_key:   "{{ aws_access_key }}"
-    aws_secret_key:   "{{ aws_secret_key }}"
     tags:
       Name:           "Public"
     subnets:
@@ -70,9 +58,6 @@
     name:             "My Security Group"
     description:      "My Security Group"
     vpc_id:           "{{ vpc_id }}"
-    region:           "{{ aws_region }}"
-    aws_access_key:   "{{ aws_access_key }}"
-    aws_secret_key:   "{{ aws_secret_key }}"
     rules:
       - proto:        "tcp"
         from_port:    "22"
