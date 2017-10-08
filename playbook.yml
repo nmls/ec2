@@ -3,8 +3,8 @@
     connection: local
     gather_facts: false
     pre_tasks:
-    # - include_vars: ec2_variables/{{type}}.yml
       - include_vars: vpc_variables/vars.yml
+      - include_vars: ec2_variables/vars.yml
     roles:
       - vpc_create
     # - provision-ec2

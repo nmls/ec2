@@ -17,7 +17,7 @@
     cidr: "{{ public_subnet_1_cidr }}"
     az: "{{ lookup('env','AWS_REGION') }}a"
     resource_tags:
-      Name: "Public Subnet"
+      Name: "public"
   register: my_public_subnet
 
 - name: set public subnet id in variable
@@ -47,8 +47,8 @@
 
 - name: create main security group
   ec2_group:
-    name: "YAPPi ec2 security group"
-    description: "YAPPi ec2 security group"
+    name: "{{ security_group_name }}"
+    description: "{{ security_group_desc }}"
     vpc_id: "{{ vpc_id }}"
     rules:
       - proto: "tcp"

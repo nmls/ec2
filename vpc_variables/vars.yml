@@ -1,5 +1,5 @@
 # vpc details
-vpc_name: "YAAPi VPC"
+vpc_name: "YAAPi vpc"
 vpc_cidr_block: "10.0.0.0/16"
 
 # subnets
@@ -8,3 +8,7 @@ private_subnet_1_cidr: "10.0.1.0/24"
 
 public_subnet_2_cidr: "10.0.10.0/24"
 private_subnet_2_cidr: "10.0.11.0/24"
+
+# security group
+security_group_name: "YAAPi ec2s sec grp"
+security_group_desc: "YAAPi default sec grp for ec2 instances"
