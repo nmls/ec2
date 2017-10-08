@@ -4,59 +4,60 @@
     name: "{{ vpc_name }}"
     cidr_block: "{{ vpc_cidr_block }}"
     state: "present"
-  register: my_vpc
+  register: r_created_vpc
 
 - name: set vpc id in variable
   set_fact:
-    vpc_id: "{{ my_vpc.vpc.id }}"
+    created_vpc_id: "{{ r_created_vpc.vpc.id }}"
 
 - name: create public subnet
   ec2_vpc_subnet:
     state: "present"
-    vpc_id: "{{ vpc_id }}"
-    cidr: "{{ public_subnet_1_cidr }}"
-    az: "{{ lookup('env','AWS_REGION') }}a"
+    vpc_id: "{{ created_vpc_id }}"
+    cidr: "{{ pub_subnet1_cidr }}"
+    az: "{{ aws_region }}a"
     resource_tags:
       Name: "public"
-  register: my_public_subnet
+  register: r_created_pub_subnet
 
 - name: set public subnet id in variable
   set_fact:
-    public_subnet_id: "{{ my_public_subnet.subnet.id }}"
+    created_pub_subnet_id: "{{ r_created_pub_subnet.subnet.id }}"
 
 - name: create internet gateway for vpc
   ec2_vpc_igw:
-    vpc_id: "{{ vpc_id }}"
+    vpc_id: "{{ created_vpc_id }}"
     state: "present"
-  register: my_vpc_igw
+  register: r_created_vpc_igw
 
 - name: set internet gateway id in variable
   set_fact:
-    igw_id: "{{ my_vpc_igw.gateway_id }}"
+    created_vpc_igw_id: "{{ r_created_vpc_igw.gateway_id }}"
 
 - name: route table
   ec2_vpc_route_table:
-    vpc_id: "{{ vpc_id }}"
+    vpc_id: "{{ created_vpc_id }}"
     tags:
       Name: "public"
     subnets:
-      - "{{ public_subnet_id }}"
+      - "{{ created_pub_subnet_id }}"
     routes:
       - dest: "0.0.0.0/0"
-        gateway_id: "{{ igw_id }}"
+        gateway_id: "{{ created_vpc_igw_id }}"
 
 - name: create main security group
   ec2_group:
-    name: "{{ security_group_name }}"
-    description: "{{ security_group_desc }}"
-    vpc_id: "{{ vpc_id }}"
+    name: "{{ default_secgrp_name }}"
+    description: "{{ default_secgrp_desc }}"
+    vpc_id: "{{ created_vpc_id }}"
     rules:
       - proto: "tcp"
         from_port: "22"
         to_port: "22"
         cidr_ip: "0.0.0.0/0"
-  register: my_security_group
+  register: r_created_secgrp
 
 - name: set security group in variable
   set_fact:
-    security_group_id: "{{my_security_group.group_id}}"
+    created_secgrp_id: "{{r_created_secgrp.group_id}}"
+

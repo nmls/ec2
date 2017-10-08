@@ -1,0 +1,10 @@
+---
+  - hosts: localhost
+    connection: local
+    gather_facts: false
+    roles:
+      - load-vars
+      - vpc-create
+      - ec2-create
+    vars:
+      ansible_python_interpreter: "venv/bin/python"

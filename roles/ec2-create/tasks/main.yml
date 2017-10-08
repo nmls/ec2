@@ -1,22 +1,22 @@
 ---
 - name: create ec2 instance
   ec2:
-    region: "{{ec2_config.region}}"
-    zone: "{{ec2_config.zone}}"
-    keypair: "{{ec2_config.keypair}}"
-    instance_type: "{{ec2_config.instance_type}}"
-    image: "{{ec2_config.image}}"
-    vpc_subnet_id: "{{ec2_config.vpc_subnet_id}}"
-    group: "{{ec2_config.group}}"
-    assign_public_ip: "{{ec2_config.assign_public_ip}}"
+    region: "{{ aws_region }}"
+    zone: "{{ aws_region }}a"
+    keypair: "{{ ec2_instance_keypair }}"
+    instance_type: "{{ ec2_instance_type }}"
+    image: "{{ ec2_instance_ami }}"
+    vpc_subnet_id: "{{ created_pub_subnet_id }}"
+    group_id: "{{ created_secgrp_id }}"
+    assign_public_ip: "{{ ec2_instance_pub_ip }}"
     volumes:
       - device_name: /dev/sda1
-        volume_size: "{{ec2_config.volume_size}}"
-        delete_on_termination: true   
-    count: 1    
-    wait: yes    
+        volume_size: "{{ ec2_instance_volume_size }}"
+        delete_on_termination: true
+    count: 1
+    wait: yes
     instance_tags:
-      Name: "{{ec2_config.instance_tag_name}}" 
+      Name: "{{ ec2_instance_tag_name }}"
   register: ec2
 
 - name: debug instances 

@@ -26,7 +26,10 @@ $ hash -r
 $ rehash
 ```
 
+check vars/dev/vars.yml if you'd like to make any changes to instance type,
+ssh keypair name, volume size or AMI. you probably want to change the keypair.
+
 let's run
 ```
-$ ansible-playbook -vvv -i "localhost," --connection=local playbook.yml
+$ ansible-playbook -vvv -i "localhost," --connection=local ec2.yml
 ```
