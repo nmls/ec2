@@ -18,6 +18,7 @@
     state:            "present"
     vpc_id:           "{{ vpc_id }}"
     cidr:             "{{ public_subnet_1_cidr }}"
+    az:               "{{ lookup('env','AWS_REGION') }}a"
     resource_tags:
       Name:           "Public Subnet"
   register: my_public_subnet
