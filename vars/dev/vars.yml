@@ -1,0 +1,20 @@
+---
+# aws account details
+aws_region: "{{ lookup('env', 'AWS_REGION') }}"
+
+# ec2 instance default options
+ec2_instance_ami: "ami-e05a4d84"
+ec2_instance_pub_ip: "yes"
+ec2_instance_volume_size: 50
+ec2_instance_tag_name: "YAAPi ec2"
+ec2_instance_keypair: "nicholas"
+ec2_instance_type: "t2.micro"
+
+# vpc, subnets, default security group
+vpc_name: "YAPPi vpc"
+vpc_cidr_block: "10.0.0.0/16"
+pub_subnet1_cidr: "10.0.0.0/24"
+pri_subnet1_cidr: "10.0.1.0/24"
+default_secgrp_name: "YAAPi ec2s sec grp"
+default_secgrp_desc: "YAAPi default sec grp for ec2 instances"
+
