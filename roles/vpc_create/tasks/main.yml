@@ -1,65 +1,62 @@
-
-- name:               Create VPC
+---
+- name: create vpc
   ec2_vpc_net:
-    name:             "{{ vpc_name }}"
-    cidr_block:       "{{ vpc_cidr_block }}"
-    state:            "present"
+    name: "{{ vpc_name }}"
+    cidr_block: "{{ vpc_cidr_block }}"
+    state: "present"
   register: my_vpc
 
-
-
-- name:               Set VPC ID in variable
+- name: set vpc id in variable
   set_fact:
-    vpc_id:           "{{ my_vpc.vpc.id }}"
+    vpc_id: "{{ my_vpc.vpc.id }}"
 
-
-- name:               Create Public Subnet
+- name: create public subnet
   ec2_vpc_subnet:
-    state:            "present"
-    vpc_id:           "{{ vpc_id }}"
-    cidr:             "{{ public_subnet_1_cidr }}"
-    az:               "{{ lookup('env','AWS_REGION') }}a"
+    state: "present"
+    vpc_id: "{{ vpc_id }}"
+    cidr: "{{ public_subnet_1_cidr }}"
+    az: "{{ lookup('env','AWS_REGION') }}a"
     resource_tags:
-      Name:           "Public Subnet"
+      Name: "Public Subnet"
   register: my_public_subnet
 
-
-- name:               Set Public Subnet ID in variable
+- name: set public subnet id in variable
   set_fact:
     public_subnet_id: "{{ my_public_subnet.subnet.id }}"
 
-
-- name:               Create Internet Gateway for VPC
+- name: create internet gateway for vpc
   ec2_vpc_igw:
-    vpc_id:           "{{ vpc_id }}"
-    state:            "present"
+    vpc_id: "{{ vpc_id }}"
+    state: "present"
   register: my_vpc_igw
 
-
-- name:               Set Internet Gateway ID in variable
+- name: set internet gateway id in variable
   set_fact:
-    igw_id:           "{{ my_vpc_igw.gateway_id }}"
+    igw_id: "{{ my_vpc_igw.gateway_id }}"
 
-
-- name:               route table
+- name: route table
   ec2_vpc_route_table:
-    vpc_id:           "{{ vpc_id }}"
+    vpc_id: "{{ vpc_id }}"
     tags:
-      Name:           "Public"
+      Name: "public"
     subnets:
       - "{{ public_subnet_id }}"
     routes:
-      - dest:         "0.0.0.0/0"
-        gateway_id:   "{{ igw_id }}"
+      - dest: "0.0.0.0/0"
+        gateway_id: "{{ igw_id }}"
 
-
-- name:               Create Main Security Group
+- name: create main security group
   ec2_group:
-    name:             "My Security Group"
-    description:      "My Security Group"
-    vpc_id:           "{{ vpc_id }}"
+    name: "YAPPi ec2 security group"
+    description: "YAPPi ec2 security group"
+    vpc_id: "{{ vpc_id }}"
     rules:
-      - proto:        "tcp"
-        from_port:    "22"
-        to_port:      "22"
-        cidr_ip:      "{{ my_ip }}/32"
+      - proto: "tcp"
+        from_port: "22"
+        to_port: "22"
+        cidr_ip: "0.0.0.0/0"
+  register: my_security_group
+
+- name: set security group in variable
+  set_fact:
+    security_group_id: "{{my_security_group.group_id}}"
