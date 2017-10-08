@@ -1,5 +1,5 @@
 # VPC Information
-vpc_name:       "My VPC"
+vpc_name:       "YAPPi VPC"
 vpc_cidr_block: "10.0.0.0/16"
 
 # For Security Group Rule
