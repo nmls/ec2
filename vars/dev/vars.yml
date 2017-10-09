@@ -9,6 +9,7 @@ ec2_instance_volume_size: 50
 ec2_instance_tag_name: "YAAPi ec2"
 ec2_instance_keypair: "nicholas"
 ec2_instance_type: "t2.micro"
+ec2_instance_del_vol_on_termination: "yes"
 
 # vpc, subnets, default security group
 vpc_name: "YAPPi vpc"
