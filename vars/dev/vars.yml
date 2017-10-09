@@ -3,7 +3,7 @@
 aws_region: "{{ lookup('env', 'AWS_REGION') }}"
 
 # ec2 instance default options
-ec2_instance_ami: "ami-e05a4d84"
+ec2_instance_ami: "{{ lookup('csvfile', aws_region+' file='+playbook_dir+'/amis-centos.csv delimeter=, col=1') }}"
 ec2_instance_pub_ip: "yes"
 ec2_instance_volume_size: 50
 ec2_instance_tag_name: "YAAPi ec2"
